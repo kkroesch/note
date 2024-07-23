@@ -1,15 +1,15 @@
 // note.rs
-// Ein CLI-Programm zum Erstellen von Notizen. Der Benutzer gibt Zeilen ein,
-// die nach dem Drücken von CTRL-D in eine Datei gespeichert werden. Die Datei
-// enthält einen YAML-ähnlichen Header mit Titel (erste Zeile der Eingabe),
-// Datum (aktuelles Datum im ISO-Format) und Autor ($USER).
-// Die Datei wird im Verzeichnis $NOTES_DIR/drafts gespeichert.
+// A CLI program for creating notes. The user enters lines,
+// which are saved to a file after entering a single dot (".") on the input line. The file
+// contains a YAML-like header with the title (first line of input),
+// date (current date in ISO format), and author ($USER).
+// The file is saved in the directory $NOTES_DIR/drafts.
 //
 
-// Verwendete Bibliotheken:
-// - dirs: Zugriff auf Verzeichnisse (z.B. Home-Verzeichnis).
-// - chrono: Arbeiten mit Datum und Uhrzeit.
-// - ansi_term: Farbige Terminalausgaben.
+// Used libraries:
+// - dirs: Access to directories (e.g., home directory).
+// - chrono: Working with date and time.
+// - ansi_term: Colored terminal output.
 
 use ansi_term::Colour::{Fixed, Green, Red};
 use chrono::prelude::*;
@@ -20,7 +20,8 @@ use std::io::{self, BufRead, Write};
 use std::path::PathBuf;
 
 fn main() {
-    // Liest die NOTES_DIR Umgebungsvariable oder verwendet das Home-Verzeichnis als Fallback.
+    // Reads the NOTES_DIR environment variable or uses the home directory as a fallback.
+
     let notes_dir = env::var("NOTES_DIR").unwrap_or_else(|_| {
         home_dir()
             .unwrap_or_else(|| PathBuf::from("."))
@@ -47,7 +48,7 @@ fn main() {
     let mut input = String::new();
     let stdin = io::stdin();
 
-    // Lese die erste Zeile mit dem Prompt '#'
+    // Read first line with prompt '#'
     print!("# ");
     io::stdout().flush().unwrap();
     let mut first_line = String::new();
@@ -56,10 +57,10 @@ fn main() {
         .read_line(&mut first_line)
         .expect("Failed to read line");
 
-    // Entferne die Zeilenumbrüche von der ersten Zeile
+    // remove line breaks
     let first_line = first_line.trim();
 
-    // Füge die erste Zeile zum Gesamteingabetext hinzu
+    // Add Markdown title
     input.push_str(&format!("# {}\n", first_line));
 
     loop {
