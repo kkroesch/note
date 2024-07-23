@@ -11,6 +11,8 @@
 // - chrono: Working with date and time.
 // - ansi_term: Colored terminal output.
 
+mod commands;
+
 use ansi_term::Colour::{Fixed, Green, Red};
 use chrono::prelude::*;
 use dirs::home_dir;
@@ -77,7 +79,14 @@ fn main() {
             break;
         }
 
-        input.push_str(&line);
+        // Check if the line is a command
+        if line.trim().starts_with('@') {
+            if let Err(err) = commands::handle_command(line.trim(), &mut input) {
+                eprintln!("{}", Red.paint(err));
+            }
+        } else {
+            input.push_str(&line);
+        }
     }
 
     if !first_line.is_empty() {
