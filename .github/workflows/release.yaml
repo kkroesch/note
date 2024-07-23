@@ -52,6 +52,12 @@ jobs:
           name: note
           path: target/release/note
 
+      - name: Generate Release Notes
+        id: release_notes
+        run: |
+          echo "## Changes" > RELEASE_NOTES.md
+          git log --oneline $(git describe --tags --abbrev=0 @^)..@ | grep -E "^(FEATURE|FIX)" >> RELEASE_NOTES.md
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -60,6 +66,7 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
+          body_path: ./RELEASE_NOTES.md
           draft: false
           prerelease: false
 
