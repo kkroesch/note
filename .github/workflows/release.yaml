@@ -17,6 +17,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Extract release notes
+        uses: ffurrer2/extract-release-notes@v2
+        with:
+          release_notes_file: RELEASE_NOTES.md
+
       - name: Set up Rust
         uses: actions-rs/toolchain@v1
         with:
@@ -55,12 +60,6 @@ jobs:
         with:
           name: note
           path: target/release/note
-
-      - name: Generate Release Notes
-        id: release_notes
-        run: |
-          echo "## Changes" > RELEASE_NOTES.md
-          git log --oneline $(git describe --tags) | grep -E "(FEATURE|FIX)" >> RELEASE_NOTES.md
 
       - name: Create Release
         id: create_release
