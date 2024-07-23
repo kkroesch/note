@@ -60,7 +60,7 @@ jobs:
         id: release_notes
         run: |
           echo "## Changes" > RELEASE_NOTES.md
-          git log --oneline $(git describe --tags --abbrev=0 @^)..@ | grep -E "^(FEATURE|FIX)" >> RELEASE_NOTES.md
+          git log --oneline $(git describe --tags) | grep -E "(FEATURE|FIX)" >> RELEASE_NOTES.md
 
       - name: Create Release
         id: create_release
