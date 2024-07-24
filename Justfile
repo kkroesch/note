@@ -6,7 +6,7 @@ BINARY := "note"
 TARGET_DIR := "~/.local/bin"
 
 release_notes:
-    git log --oneline $(git describe --tags --abbrev=0) | grep -E '(FEATURE|FIX)' | awk '{ $1=""; print substr($0,2) }'
+    @git log --oneline $(git describe --tags --abbrev=0) | grep -E '(FEATURE|FIX)'
 
 # Kompiliert das Projekt im Release-Modus
 build:
