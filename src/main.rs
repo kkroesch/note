@@ -88,7 +88,7 @@ fn main() -> Result<()> {
         }
     }
 
-    let filename = title.trim().replace(" ", "_") + ".md";
+    let filename = title.trim().to_owned() + ".md";
     let file_path = drafts_dir.join(&filename);
     let mut file = File::create(&file_path)?;
 
